@@ -1,0 +1,486 @@
+\chapter{Julia}
+\label{ch:julia}
+
+% This is so that we can execute some needed imports but not see them typeset.
+\begin{textblock*}{\textwidth}(50cm,0cm)
+	\begin{juliaconsole}
+		using InteractiveUtils
+		using LinearAlgebra
+	\end{juliaconsole}
+\end{textblock*}
+
+Julia is a scientific programming language that is free and open source.\footnote{Julia may be obtained from\\ \url{http://julialang.org}.} It is a relatively new language that borrows inspiration from languages like Python, MATLAB, and R. It was selected for use in this book because it is sufficiently high level\footnote{In contrast with languages like C++, Julia does not require programmers to worry about memory management and other lower-level details.} so that the algorithms can be compactly expressed and readable while also being fast.
+% This book uses Julia version \jl{VERSION}.
+This book is compatible with Julia version 1.0.
+This appendix introduces the necessary concepts for understanding the code included in the text.
+
+\section{Types}
+
+Julia has a variety of basic types that can represent data such as truth values, numbers, strings, arrays, tuples, and dictionaries.
+Users can also define their own types. This section explains how to use some of the basic types and define new types.
+
+\subsection{Booleans}
+
+The \vocab{Boolean} type in Julia, written \jlv{Bool}, includes the values \jlv{true} and \jlv{false}. We can assign these values to variables.  Variable names can be any string of characters, including Unicode, with a few restrictions.
+\begin{juliaverbatim}
+done = false
+α = false
+\end{juliaverbatim}
+The left-hand side of the equal sign is the variable name, and the right hand side is the value.
+
+We can make assignments in the Julia console. The console will return a response to the expression being evaulated.
+\begin{juliaconsole}
+x = true
+y = false
+typeof(x)
+\end{juliaconsole}
+
+The standard Boolean operators are supported.
+\begin{juliaconsole}
+!x     # not
+x && y # and
+x || y # or
+\end{juliaconsole}
+The \jlv{#} symbol indicates that the rest of the line is a comment and should not be evaluated.
+
+\subsection{Numbers}
+
+Julia supports integer and floating point numbers as shown here
+\begin{juliaconsole}
+typeof(42)
+typeof(42.0)
+\end{juliaconsole}
+Here, \jlv{Int64} denotes a 64-bit integer, and \jlv{Float64} denotes a 64-bit floating point value.\footnote{On 32-bit machines, an integer literal like \jlv{42} is interpreted as an \jlv{Int32}.} We can also perform the standard mathematical operations:
+\begin{juliaconsole}
+x = 4
+y = 2
+x + y
+x - y
+x * y
+x / y
+x ^ y
+x % y # x modulo y
+\end{juliaconsole}
+
+Note that the result of \jlv{x / y} is a \jlv{Float64}, even when \jlv{x} and \jlv{y} are integers.
+We can also perform these operations at the same time as an assignment. For example, \jlv{x += 1} is shorthand for \jlv{x = x + 1}.
+
+We can also make comparisons:
+\begin{juliaconsole}
+3 > 4
+3 >= 4
+3 ≥ 4   # unicode also works
+3 < 4
+3 <= 4
+3 ≤ 4   # unicode also works
+3 == 4
+3 < 4 < 5
+\end{juliaconsole}
+
+\subsection{Strings}
+
+A \vocab{string} is an array of characters. Strings are not used very much in this textbook except for reporting certain errors. An object of type \jlv{String} can be constructed using \jlv{"} characters. For example:
+\begin{juliaconsole}
+x = "optimal"
+typeof(x)
+\end{juliaconsole}
+
+\subsection{Vectors}
+
+A \vocab{vector} is a one-dimensional array that stores a sequence of values.
+We can construct a vector using square brackets, separating elements by commas.
+Semicolons in these examples suppress the output.
+\begin{juliaconsole}
+x = [];                      # empty vector
+x = trues(3);                # Boolean vector containing three trues
+x = ones(3);                 # vector of three ones
+x = zeros(3);                # vector of three zeros
+x = rand(3);                 # vector of three random numbers between 0 and 1
+x = [3, 1, 4];               # vector of integers
+x = [3.1415, 1.618, 2.7182]; # vector of floats
+\end{juliaconsole}
+An \vocab{array comprehension} can be used to create vectors. Below, we use the \jlv{print} function so that the output is printed horizontally.
+\begin{juliaconsole}
+print([sin(x) for x = 1:5])
+\end{juliaconsole}
+
+We can inspect the type of vectors:
+\begin{juliaconsole}
+typeof([3, 1, 4])               # 1-dimensional array of Int64s
+typeof([3.1415, 1.618, 2.7182]) # 1-dimensional array of Float64s
+\end{juliaconsole}
+
+We index into vectors using square brackets.
+\begin{juliaconsole}
+x[1]       # first element is indexed by 1
+x[3]       # third element
+x[end]     # use end to reference the end of the array
+x[end - 1] # this returns the second to last element
+\end{juliaconsole}
+
+We can pull out a range of elements from an array. Ranges are specified using a colon notation.
+\begin{juliaconsole}
+x = [1, 1, 2, 3, 5, 8, 13];
+print(x[1:3])      # pull out the first three elements
+print(x[1:2:end])  # pull out every other element
+print(x[end:-1:1]) # pull out all the elements in reverse order
+\end{juliaconsole}
+
+We can perform a variety of different operations on arrays. The exclamation mark at the end of function names is often used to indicate that the function mutates (i.e., changes) the input.
+\begin{juliaconsole}
+print([x, x])             # concatenation
+length(x)
+print(push!(x, -1))       # add an element to the end
+pop!(x)                   # remove an element from the end
+print(append!(x, [2, 3])) # append y to the end of x
+print(sort!(x))           # sort the elements in the vector
+x[1] = 2; print(x)        # change the first element to 2
+x = [1, 2];
+y = [3, 4];
+print(x + y)              # add vectors
+print(3x - [1, 2])        # multiply by a scalar and subtract
+print(dot(x, y))          # dot product
+print(x⋅y)                # dot product using unicode character
+\end{juliaconsole}
+
+It is often useful to apply various functions elementwise to vectors.
+\begin{juliaconsole}
+print(x .* y)   # elementwise multiplication
+print(x .^ 2)   # elementwise squaring
+print(sin.(x))  # elementwise application of sin
+print(sqrt.(x)) # elementwise application of sqrt
+\end{juliaconsole}
+
+\subsection{Matrices}
+
+A \vocab{matrix} is a two-dimensional array. Like a vector, it is constructed using square brackets. We use spaces to delimit elements in the same row and semicolons to delimit rows. We can also index into the matrix and output submatrices using ranges.
+\begin{juliaconsole}
+X = [1 2 3; 4 5 6; 7 8 9; 10 11 12];
+typeof(X)         # a 2-dimensional array of Int64s
+X[2]              # second element using column-major ordering
+X[3,2]            # element in third row and second column
+print(X[1,:])     # extract the first row
+print(X[:,2])     # extract the second column
+print(X[:,1:2])   # extract the first two columns
+print(X[1:2,1:2]) # extract a 2x2 matrix from the top left of x
+\end{juliaconsole}
+
+We can also construct a variety of special matrices and use array comprehensions:
+\begin{juliaconsole}
+print(Matrix(1.0I, 3, 3))          # 3x3 identity matrix
+print(Matrix(Diagonal([3, 2, 1]))) # 3x3 diagonal matrix with 3, 2, 1 on diagonal
+print(rand(3,2))                   # 3x2 random matrix
+print(zeros(3,2))                  # 3x2 matrix of zeros
+print([sin(x + y) for x = 1:3, y = 1:2]) # array comprehension
+\end{juliaconsole}
+
+Matrix operations include the following:
+\begin{juliaconsole}
+print(X')       # complex conjugate transpose
+print(3X .+ 2)  # multiplying by scalar and adding scalar
+X = [1 3; 3 1]; # create an invertible matrix
+print(inv(X))   # inversion
+det(X)          # determinant
+print([X X])    # horizontal concatenation
+print([X; X])   # vertical concatenation
+print(sin.(X))  # elementwise application of sin
+\end{juliaconsole}
+
+\subsection{Tuples}
+
+A \vocab{tuple} is an ordered list of values, potentially of different types. They are constructed with parentheses. They are similar to arrays, but they cannot be mutated.
+\begin{juliaconsole}
+x = (1,) # a single element tuple indicated by the trailing comma
+x = (1, 0, [1, 2],  2.5029, 4.6692) # third element is a vector
+x[2]
+x[end]
+x[4:end]
+length(x)
+\end{juliaconsole}
+
+\subsection{Dictionaries}
+\label{sec:dictionaries}
+
+A \vocab{dictionary} is a collection of key-value pairs. Key-value pairs are indicated with a double arrow operator. We can index into a dictionary using square brackets as with arrays and tuples.
+\begin{juliaconsole}
+x = Dict(); # empty dictionary
+x[3] = 4 # associate value 4 with key 3
+x = Dict(3=>4, 5=>1) # create a dictionary with two key-value pairs
+x[5]         # return value associated with key 5
+haskey(x, 3) # check whether dictionary has key 3
+haskey(x, 4) # check whether dictionary has key 4
+\end{juliaconsole}
+
+\subsection{Composite Types}
+
+A \vocab{composite type} is a collection of named fields. By default, an instance of a composite type is immutable (i.e., it cannot change). We use the \jlv{struct} keyword and then give the new type a name and list the names of the fields.
+\begin{juliaverbatim}
+struct A
+    a
+    b
+end
+\end{juliaverbatim}
+
+Adding the keyword \jlv{mutable} makes it so that an instance can change.
+\begin{juliaverbatim}
+mutable struct B
+    a
+    b
+end
+\end{juliaverbatim}
+
+Composite types are constructed using parentheses, between which we pass in values for the different fields. For example,
+\begin{juliaverbatim}
+x = A(1.414, 1.732)
+\end{juliaverbatim}
+
+The double-colon operator can be used to annotate the types for the fields.
+\begin{juliaverbatim}
+struct A
+    a::Int64
+    b::Float64
+end
+\end{juliaverbatim}
+This annotation requires that we pass in an \jlv{Int64} for the first field and a \jlv{Float64} for the second field.
+For compactness, this text does not use type annotations, but it is at the expense of performance.
+Type annotations allow Julia to improve runtime performance because the compiler can optimize the underlying code for specific types.
+
+\subsection{Abstract Types}
+
+So far we have discussed \vocab{concrete types}, which are types that we can construct. However, concrete types are only part of the type hierarchy. There are also \vocab{abstract types}, which are supertypes of concrete types and other abstract types.
+
+We can explore the type hierarchy of the \jlv{Float64} type shown in \cref{fig:type_hierarchy} using the \jlv{supertype} and \jlv{subtype} functions.
+\begin{marginfigure}[-4cm]
+	\centering
+	\begin{tikzpicture}[x=1cm, y=1cm]
+	\node[anchor=west](Any) at (0,0) {\jlv{Any}};
+	\node[anchor=west](Number) at (0.5,-0.5) {\jlv{Number}};
+	\node[anchor=west](Real) at (1.0,-1.0) {\jlv{Real}};
+	\node[anchor=west](AbstractFloat) at (1.5,-1.5) {\jlv{AbstractFloat}};
+	\node[anchor=west](Float64) at (2.0,-2.0) {\jlv{Float64}};
+	\node[anchor=west](Float32) at (2.0,-2.5) {\jlv{Float32}};
+	\node[anchor=west](Float16) at (2.0,-3.0) {\jlv{Float16}};
+	\node[anchor=west](BigFloat) at (2.0,-3.5) {\jlv{BigFloat}};
+	\draw ($(Any.south west) + (0.25,0)$) |- (Number);
+	\draw ($(Number.south west) + (0.25,0)$) |- (Real);
+	\draw ($(Real.south west) + (0.25,0)$) |- (AbstractFloat);
+	\draw ($(AbstractFloat.south west) + (0.25,0)$) |- (Float64);
+	\draw ($(AbstractFloat.south west) + (0.25,0)$) |- (Float32);
+	\draw ($(AbstractFloat.south west) + (0.25,0)$) |- (Float16);
+	\draw ($(AbstractFloat.south west) + (0.25,0)$) |- (BigFloat);
+	\node[anchor=north] at ($(Any.south west) + (0.25,-0.3)$) {$\vdots$};
+	\node[anchor=north] at ($(Number.south west) + (0.25,-0.3)$) {$\vdots$};
+	\node[anchor=north] at ($(Real.south west) + (0.25,-0.3)$) {$\vdots$};
+	\end{tikzpicture}
+	\caption{
+		\label{fig:type_hierarchy}
+		The type hierarchy for the \jlv{Float64} type.
+	}
+\end{marginfigure}
+
+\begin{juliaconsole}
+supertype(Float64)
+supertype(AbstractFloat)
+supertype(Real)
+supertype(Number)
+supertype(Any)          # Any is at the top of the hierarchy
+subtypes(AbstractFloat) # different types of AbstractFloats
+subtypes(Float64)       # Float64 does not have any subtypes
+\end{juliaconsole}
+
+
+We can define our own abstract types.
+\begin{juliaverbatim}
+abstract type C end
+abstract type D <: C end # D is an abstract subtype of C
+struct E <: D # E is composite type that is a subtype of D
+    a
+end
+\end{juliaverbatim}
+
+\subsection{Parametric Types}
+
+Julia supports \vocab{parametric types}, which are types that take parameters. We have already seen a parametric type with our dictionary example.
+\begin{juliaconsole}
+x = Dict(3=>4, 5=>1)
+\end{juliaconsole}
+This constructs a \jlv{Dict{Int64,Int64}}. The parameters to the parametric type are listed within braces and delimited by commas. For the dictionary type, the first parameter specifies the key type, and the second parameter specifies the value type. Julia was able to infer this based on the input, but we could have specified it explicitly.
+\begin{juliaconsole}
+x = Dict{Int64,Int64}(3=>4, 5=>1)
+\end{juliaconsole}
+It is possible to define our own parametric types, but we do not do that in this text.
+
+\section{Functions}
+
+A \vocab{function} is an object that maps a tuple of argument values to a return value. This section discusses how to define and work with functions.
+
+\subsection{Named Functions}
+
+One way to define a \vocab{named function} is to use the \jlv{function} keyword, followed by the name of the function and a tuple of names of arguments.
+\begin{juliaverbatim}
+function f(x, y)
+	return x + y
+end
+\end{juliaverbatim}
+We can also define functions compactly using assignment form.
+\begin{juliaconsole}[deffun]
+f(x, y) = x + y;
+f(3, 0.1415)
+\end{juliaconsole}
+
+\subsection{Anonymous Functions}
+
+An \vocab{anonymous function} is not given a name, though it can be assigned to a named variable. One way to define an anonymous function is to use the arrow operator.
+\begin{juliaconsole}[anonfun]
+h = x -> x^2 + 1 # assign anonymous function to a variable
+g(f, a, b) = [f(a), f(b)]; # applies function f to a and b and returns array
+g(h, 5, 10)
+g(x->sin(x)+1, 10, 20)
+\end{juliaconsole}
+
+\subsection{Optional Arguments}
+
+We can specify optional arguments by setting default values.
+\begin{juliaconsole}[optarg]
+f(x = 10) = x^2;
+f()
+f(3)
+f(x, y, z = 1) = x*y + z;
+f(1, 2, 3)
+f(1, 2)
+\end{juliaconsole}
+
+\subsection{Keyword Arguments}
+
+Functions with keyword arguments are defined using a semicolon.
+\begin{juliaconsole}[keywordarg]
+f(; x = 0) = x + 1;
+f()
+f(x = 10)
+f(x, y = 10; z = 2) = (x + y)*z;
+f(1)
+f(2, z = 3)
+f(2, 3)
+f(2, 3, z = 1)
+\end{juliaconsole}
+
+\subsection{Function Overloading}
+\label{sec:operation_overloading}
+
+The types of the arguments passed to a function can be specified using the double colon operator. If multiple functions of the same name are provided, Julia will execute the appropriate function.
+\begin{juliaconsole}[overloading]
+f(x::Int64) = x + 10;
+f(x::Float64) = x + 3.1415;
+f(1)
+f(1.0)
+f(1.3)
+\end{juliaconsole}
+
+The implementation of the most specific function will be used.
+\begin{juliaconsole}[overloading]
+f(x) = 5;
+f(x::Float64) = 3.1415;
+f([3, 2, 1])
+f(0.00787499699)
+\end{juliaconsole}
+
+
+\section{Control Flow}
+
+We can control the flow of our programs using conditional evaluation and loops. This section provides some of the syntax used in the book.
+
+\subsection{Conditional Evaluation}
+
+Conditional evaluation will check the value of a Boolean expression and then evaluate the appropriate block of code. One of the most common ways to do this is with an \jlv{if} statement.
+\begin{juliaverbatim}
+if x < y
+    # run this if x < y
+elseif x > y
+    # run this if x > y
+else
+    # run this if x == y
+end
+\end{juliaverbatim}
+We can also use the \vocab{ternary operator} with its question mark and colon syntax. It checks the Boolean expression before the question mark. If the expression evaluates to true, then it returns what comes before the colon; otherwise it returns what comes after the colon.
+\begin{juliaconsole}[condeval]
+f(x) = x > 0 ? x : 0;
+f(-10)
+f(10)
+\end{juliaconsole}
+
+\subsection{Loops}
+
+A \vocab{loop} allows for repeated evaluation of expressions. One type of loop is the while loop. It repeatedly evaluates a block of expressions until the specified condition after the \jlv{while} keyword is met. The following example will sum the values in array \jlv{x}
+\begin{juliaverbatim}
+x = [1, 2, 3, 4, 6, 8, 11, 13, 16, 18]
+s = 0
+while x != []
+    s += pop!(x)
+end
+\end{juliaverbatim}
+
+Another type of loop is the for loop. It uses the \jlv{for} keyword. The following example will also sum over the values in the array \jlv{x} but will not modify \jlv{x}.
+\begin{juliaverbatim}
+x = [1, 2, 3, 4, 6, 8, 11, 13, 16, 18]
+s = 0
+for i = 1:length(x)
+    s += x[i]
+end
+\end{juliaverbatim}
+The \jlv{=} can be substituted with \jlv{in} or \jlv{∈}.
+The following code block is equivalent.
+\begin{juliaverbatim}
+x = [1, 2, 3, 4, 6, 8, 11, 13, 16, 18]
+s = 0
+for y in x
+    s += y
+end
+\end{juliaverbatim}
+
+
+\section{Packages}
+\label{sec:packages}
+
+\begin{ignore}
+% Ignoring because these are 0.6 versions and not 0.7 or 1.0 versions.
+    \begin{margintable}
+    	\caption{These packages were used to typeset this book.\label{tab:packages}}
+    	\begin{jlcode}
+    		println("\\begin{tabular}{ll}")
+    		println("\\toprule")
+    		println("Package & Version \\\\")
+    		println("\\midrule")
+    		open("REQUIRE") do f
+    		for l in readlines(f)
+    		if startswith(l, "julia") || startswith(l, "Vec") || startswith(l, "Weave") || startswith(l, "ColorSchemes") || startswith(l, "Optim") || startswith(l, "PGFPlots") || startswith(l, "SymEngine") || startswith(l, "TikzGraphs") || length(l) < 1
+    		continue
+    		end
+    		println("$l & $(Pkg.installed(l))\\\\")
+    		end
+    		end
+    		println("\\bottomrule")
+    		println("\\end{tabular}")
+    	\end{jlcode}
+    \end{margintable}
+\end{ignore}
+
+A \vocab{package} is a collection of Julia code and possibly other external libraries that can be imported to provide additional functionality.
+Julia has a built-in package manager.
+A list of registered packages can be found at \url{https://pkg.julialang.org}. To add a registered package like \jlpkg{Distributions}, we can run:
+\begin{juliaverbatim}
+Pkg.add("Distributions")
+\end{juliaverbatim}
+To update packages, we use:
+\begin{juliaverbatim}
+Pkg.update()
+\end{juliaverbatim}
+To use a package, we use the keyword \jlv{using}:
+\begin{juliaverbatim}
+using Distributions
+\end{juliaverbatim}
+% The packages that we use in this book are listed in \cref{tab:packages}.
+
+Several code blocks in this text specify a package import via \jlv{using}.
+Some code blocks make use of functions that are not explicitly imported.
+For instance, the \jlv{var} function is provided by \jlpkg{Statistics}, and the golden ratio $\varphi$ is defined in \jlpkg{Base.MathConstants}.
+These excluded packages are \jlpkg{Base.MathConstants}, \jlpkg{InteractiveUtils},\, \jlpkg{Iterators},\, \jlpkg{LinearAlgebra},\, \jlpkg{QuadGK},\, \jlpkg{Random},\, \jlpkg{Statistics}, and \\ \jlpkg{StatsBase}.
