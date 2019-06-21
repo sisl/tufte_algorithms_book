@@ -1,0 +1,39 @@
+% Compilation process:
+
+% julia pull_julia_code.jl
+% lualatex book
+% pythontex book
+% biber book
+% lualatex book
+
+\documentclass[fullbook]{book_template}
+
+\begin{document}
+\frontmatter
+\input{titlepage}
+\include{copyrightpage}
+\include{dedication}
+\forceheader{Contents}
+\tableofcontents
+\include{chapter/preface}
+\include{chapter/acknowledgments}
+\mainmatter
+\begin{jlcode}
+	include("../support_code.jl")
+\end{jlcode}
+\include{chapter/introduction}
+% Add additional include statements for your other chapters.
+\appendix
+\include{chapter/appendix/mathematical-concepts}
+\include{chapter/appendix/julia}
+\solutions
+\backmatter
+\chapter*{References}
+\addcontentsline{toc}{chapter}{References}
+\forceheader{References}
+\printbibliography[heading=none]
+
+\forceheader{Index}
+\printindex
+
+\end{document}

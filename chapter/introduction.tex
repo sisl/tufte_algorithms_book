@@ -1,0 +1,90 @@
+\chapter{Introduction}
+\label{ch:introduction}
+
+Welcome to the book template!
+
+\todo{This is something that I still need to do.}
+
+\tim{This is a comment that Tim inserted.}
+\mykel{And this is Mykel. Go ahead and add new commands associated with your own names by editing \texttt{book.cls}.}
+
+This template is based on our previous book.\cite{Kochenderfer2019}
+
+\section{Using Julia}
+
+In this section we provide some examples of how Julia algorithms can be typeset, tested, etc.
+We begin with a Julia algorithm, \cref{alg:sample_function}.
+We use our custom \texttt{algorithm} environment with a pythontex \texttt{juliaverbatim} environment inside to typeset the algorithm.
+A caption provides some additional information, and shows up in the margin.
+
+\begin{algorithm}
+\begin{juliaverbatim}
+function sample_function(x, a)
+	if x > a
+		return log(x)
+	else
+		return x + log(a) - a
+	end
+end
+\end{juliaverbatim}
+\caption{
+	\label{alg:sample_function}
+	A sample function that takes in an evaluation scalar \jlv{x} and a scalar parameter \jlv{a}.
+}
+\end{algorithm}
+
+We can add a test for our algorithm in the source code.
+This test does not show up when you compile.
+You can run all tests by executing \texttt{jl runtests.jl}.
+
+\begin{juliatest}
+let
+	@test isapprox(sample_function(1.0, 2), -0.30685, atol=1e-5)
+	@test isapprox(sample_function(1.0, 3), -0.90139, atol=1e-5)
+	@test isapprox(sample_function(1.5, 2), -0.19315, atol=1e-5)
+end
+\end{juliatest}
+
+The code can be executed when creating figures.
+\Cref{fig:sample_function} is a standard inline figure that executes Julia code using \jlpkg{PGFPlots} to produce a \TeX file in the \texttt{\\fig} directory.
+This file is then compiled into the PDF.
+
+\begin{figure}
+	\begin{jlcode}
+	p = let
+		xs = collect(range(0.0,stop=10.0,length=101))
+		plots = Plots.Plot[]
+		for a in [1,2,3,5]
+			push!(plots,
+				Plots.Linear(xs, [sample_function(x, a) for x in xs],
+				   style="solid, thick, mark=none", legendentry="parameter \$a = $a\$"))
+		end
+		Axis(plots, width="8cm", height="5cm", xlabel=L"x", ylabel="sample function output",
+					style="cycle list name = pastelcolors",
+		 		    legendPos="outer north east")
+	end
+	plot(p)
+	\end{jlcode}
+	\begin{center}
+		\plot{fig/sample_function}
+	\end{center}
+	\caption{
+		\label{fig:sample_function}
+		Curves obtained when using \jlv{sample_function} for several different values of \jlv{a}.
+	}
+\end{figure}
+
+Of course, there is nothing stopping you from inserting tikzpictures directly.
+\begin{figure}
+	\centering
+	\begin{tikzpicture}[x=1cm, y=1cm]
+		\draw[pastelBlue] (0,0) rectangle (2,2);
+		\fill[pastelRed]  (3,-1) rectangle ++(2,1);
+		\fill[pastelPurple]  (7,0.5) circle (0.5);
+		\node[anchor=south] at (4,0) {red rectangle};
+	\end{tikzpicture}
+	\caption{
+		\label{fig:sample_tikzpicture}
+		A figure made using the \texttt{tikzpicture} environment.
+	}
+\end{figure}

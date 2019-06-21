@@ -1,0 +1,70 @@
+\ProvidesPackage{vector}
+% based on: http://tex.stackexchange.com/questions/167172/consistent-macro-for-bold-upright-vectors-in-both-latin-and-greek
+
+\RequirePackage{xparse}
+\RequirePackage{bm,upgreek}
+
+\ExplSyntaxOn
+\NewDocumentCommand\vect{m}
+{
+	\commexo_vector:n { #1 }
+}
+
+\cs_new_protected:Npn \commexo_vector:n #1
+{
+	\tl_map_inline:nn { #1 }
+	{
+		\commexo_vector_inner:n { ##1 }
+	}
+}
+
+\cs_new_protected:Npn \commexo_vector_inner:n #1
+{
+	\tl_if_in:VnTF \g_commexo_latin_tl { #1 }
+	{% we check whether the argument is a Latin letter
+		\mathbf { #1 } % a Latin letter
+	}
+	{% if not a Latin letter, we check if it's an uppercase Greek letter
+		\tl_if_in:VnTF \g_commexo_ucgreek_tl { #1 }
+		{
+			\bm { #1 } % a Greek uppercase letter
+		}
+		{% if not, we check if it's a lowercase Greek letter
+			\tl_if_in:VnTF \g_commexo_lcgreek_tl { #1 }
+			{
+				\commexo_makeboldupright:n { #1 }
+			}
+			{% none of the above, just issue #1
+				#1 % fall back
+			}
+		}
+	}
+}
+
+\cs_new_protected:Npn \commexo_makeboldupright:n #1
+{
+	\bm { \use:c { up \cs_to_str:N #1 } }
+}
+
+\tl_new:N \g_commexo_latin_tl
+\tl_new:N \g_commexo_ucgreek_tl
+\tl_new:N \g_commexo_lcgreek_tl
+\tl_gset:Nn \g_commexo_latin_tl
+{
+	ABCDEFGHIJKLMNOPQRSTUVWXYZ
+	abcdefghijklmnopqrstuvwxyz
+	0123456789
+}
+\tl_gset:Nn \g_commexo_ucgreek_tl
+{
+	\Gamma\Delta\Theta\Lambda\Pi\Sigma\Upsilon\Phi\Chi\Psi\Omega
+}
+\tl_gset:Nn \g_commexo_lcgreek_tl
+{
+	\alpha\beta\gamma\delta\epsilon\zeta\eta\theta\iota\kappa
+	\lambda\mu\nu\xi\pi\rho\sigma\tau\upsilon\phi\chi\psi\omega
+	\varepsilon\vartheta\varpi\varphi\varsigma\varrho
+}
+
+\ExplSyntaxOff
+\endinput

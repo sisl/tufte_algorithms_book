@@ -1,0 +1,14 @@
+(sort-rule " " "")
+(sort-rule "-" "")
+
+(define-crossref-class "see")
+(markup-crossref-list :class "see" :open "\see{" :sep "; " :close "}{}")
+
+(markup-crossref-layer-list :sep ", ")
+
+(define-location-class-order ("roman-page-numbers"
+			      "arabic-page-numbers"
+			      "alpha-page-numbers"
+			      "Roman-page-numbers"
+			      "Alpha-page-numbers"
+			      "see"))

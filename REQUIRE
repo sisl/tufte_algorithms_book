@@ -1,0 +1,11 @@
+julia 1.1
+
+Colors
+ColorSchemes
+Distributions
+ImageMagick
+IterTools
+PGFPlots
+StatsBase
+TikzPictures
+Weave

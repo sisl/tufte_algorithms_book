@@ -1,0 +1,147 @@
+\addbibresource{book.bib}
+\newcommand{\sidecite}[2][0pt]{%
+	\sidenote[][#1]{\fullcite{#2}}%
+}
+\renewcommand{\cite}[2][0pt]{\sidenote[][#1]{\fullcite{#2}.}}
+
+\ExecuteBibliographyOptions{
+	sorting = nyt,
+	useprefix
+}
+
+\AtEveryBibitem{\clearfield{series}}
+\AtEveryCitekey{\clearfield{series}}
+\AtEveryBibitem{\clearlist{language}}
+\AtEveryCitekey{\clearlist{language}}
+\AtEveryBibitem{\clearlist{address}}
+\AtEveryCitekey{\clearlist{address}}
+\AtEveryBibitem{\clearlist{location}}
+\AtEveryCitekey{\clearlist{location}}
+\AtEveryBibitem{\clearfield{month}}
+\AtEveryCitekey{\clearfield{month}}
+\AtEveryCitekey{\ifentrytype{inproceedings}{\clearfield{pages}}{}}
+\AtEveryBibitem{\ifentrytype{inproceedings}{\clearfield{pages}}{}}
+\AtEveryCitekey{\ifentrytype{inproceedings}{\clearlist{publisher}}{}}
+\AtEveryBibitem{\ifentrytype{inproceedings}{\clearlist{publisher}}{}}
+\AtEveryCitekey{\ifentrytype{inproceedings}{\clearname{editor}}{}}
+\AtEveryBibitem{\ifentrytype{inproceedings}{\clearname{editor}}{}}
+\AtEveryCitekey{\ifentrytype{inproceedings}{\clearlist{organization}}{}}
+\AtEveryBibitem{\ifentrytype{inproceedings}{\clearlist{organization}}{}}
+
+
+%\AtEveryCitekey{% Clean up the bibtex rather than editing it
+% \clearfield{date}
+% \clearfield{eprint}
+% \clearfield{isbn}
+% \clearfield{issn}
+% \clearfield{month}
+% \clearlist{language}
+% \clearfield{series}
+% \ifentrytype{inproceedings}{
+% \clearlist{address}
+%  \clearlist{publisher}
+%  \clearname{editor}
+%  \clearlist{organization}
+%  \clearfield{url}
+%  \clearfield{doi}
+%  \clearfield{pages}
+% \clearlist{location}
+% }{}
+% \ifentrytype{incollection}{
+%  \clearfield{url}
+%  \clearfield{doi}
+%  \clearfield{pages}
+% }{}
+% \ifentrytype{book}{
+%  \clearfield{url}
+% }{}
+% \ifentrytype{thesis}{
+%  \clearfield{url}
+% }{}
+% \ifentrytype{article}{
+%  \clearfield{url}
+%  \clearname{editor}
+% \clearlist{location}
+% \clearlist{address}
+% }{}
+% \ifentrytype{techreport}{
+%  \clearfield{url}
+% \clearlist{location}
+% \clearlist{address}
+% }{}
+%}
+
+%\AtEveryCitekey{%
+%	\ifboolexpr{test {\ifentrytype{article}} or test {\ifentrytype{techreport}}}
+%	{\clearfield{doi}\clearfield{url}}
+%	{}}
+
+% See: http://tex.stackexchange.com/questions/43196/biblatex-fullcite-produces-different-result-from-bibliography-entry
+\DeclareCiteCommand{\fullcite}
+{\usebibmacro{prenote}}
+{\usedriver
+	{\defcounter{minnames}{6}%
+		\defcounter{maxnames}{6}}
+	{\thefield{entrytype}}.}
+{\multicitedelim}
+{\usebibmacro{postnote}}
+
+
+\DeclareFieldFormat{labelnumberwidth}{#1.}
+\DefineBibliographyStrings{english}{
+  andothers   = et al\adddot,
+  editor      = ed\adddot,
+  editors     = eds\adddot,
+}
+\defbibheading{subbibliography}[\refname]{%
+ \section*{#1}%
+ \addcontentsline{toc}{reference}{References}%
+ \markright{\thechapter: References}}
+
+
+
+\DeclareFieldFormat{titlecase}{\titlecap{\textnc{#1}}}
+\renewbibmacro*{title}{%
+  \ifboolexpr{
+    test {\iffieldundef{title}}
+    and
+    test {\iffieldundef{subtitle}}
+  }
+    {}
+    {%
+      \printtext[title]{%
+        \printfield[titlecase]{title}%
+        \setunit{\subtitlepunct}%
+        \printfield[titlecase]{subtitle}%
+      }%
+      \newunit
+    }%
+  \printfield{titleaddon}%
+}
+
+\setcounter{biburlnumpenalty}{1000}
+\setcounter{biburlucpenalty}{1000}
+\setcounter{biburllcpenalty}{1000}
+
+\bibsetup{
+  \setcounter{abbrvpenalty}{0}
+  \setcounter{highnamepenalty}{0}
+  \setcounter{lownamepenalty}{0}
+}
+
+\DeclareFieldFormat{doi}{%
+  \textsc{doi}\addcolon\space
+  \ifhyperref
+    {\href{http://dx.doi.org/#1}{\nolinkurl{#1}}}
+    {\nolinkurl{#1}}}
+
+\setcounter{biburlnumpenalty}{100}
+\setcounter{biburlucpenalty}{100}
+\setcounter{biburllcpenalty}{100}
+%\newcommand{\dobib}{\printbibliography[heading=subbibliography]}
+\newcommand{\dobib}{}
+\renewrobustcmd*{\bibinitdelim}{\addnbthinspace} % add thin space between author initials
+
+\renewcommand*{\bibfont}{\small}
+
+\renewbibmacro*{bbx:savehash}{} % remove dashes for repeated authors
