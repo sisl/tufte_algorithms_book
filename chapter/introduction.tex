@@ -68,6 +68,8 @@ This file is then compiled into the PDF.
 	}
 \end{figure}
 
+\pagebreak
+
 Of course, there is nothing stopping you from inserting tikzpictures directly, as shown in \cref{fig:sample_tikzpicture}.
 \begin{figure}
 	\centering
@@ -83,11 +85,11 @@ Of course, there is nothing stopping you from inserting tikzpictures directly, a
 	}
 \end{figure}
 
-Figures can also be placed in the margins, as with
+Figures can also be placed in the margins, as with \cref{fig:sample_marginfigure}.
 \begin{marginfigure}
 	\begin{jlcode}
 	p = let
-		Axis(Plots.Linear(x->sin(x) + x, 0:10, style="solid, pastelBlue, mark=none"),
+		Axis(Plots.Linear(x->sin(x) + x, (0,10), style="solid, pastelBlue, mark=none"),
 			 width="5cm", height="5cm", xlabel=L"x", ylabel=L"f(x)")
 	end
 	plot(p)
@@ -97,26 +99,78 @@ Figures can also be placed in the margins, as with
 	\end{center}
 	\caption{
 		\label{fig:sample_marginfigure}
-		A \texttt{marginfigure} in the margin.
+		A \texttt{marginfigure} shows up in the margin.
 	}
 \end{marginfigure}
 
 
-The \texttt{pythontex} package also supports
+The \texttt{pythontex} package also supports the \texttt{juliaconsole} environment, as shown below.
+These environments act like the julia REPL, showing code as it is entered and executed.
 \begin{juliaconsole}
-x = true
-y = false
-typeof(x)
+x = 5
+y = 7.5
+x^y
 \end{juliaconsole}
 
 \section{Custom Environments}
 
-example
+We created two custom environments in addition to the \texttt{algorithm} environment when writing \textit{Algorithms for Optimization}.
+The \texttt{example} environment creates an isolated section in a light-gray box with its own caption.
 
-problem / solution
+\begin{example}
+	An example of the \texttt{example} environment.
+	Place anything you want here, including figures.
+	\caption{
+		\label{ex:sample_example}
+		An example \texttt{example}.
+	}
+\end{example}
+
+We also have \texttt{question} and \texttt{solution} environments, typically used at the end of each chapter.
+The solutions can automatically be placed at the end of the book by using \texttt{solutionappendix}.
+
+\begin{question}
+	What is the meaning of life?
+\end{question}
+\begin{solution}
+	The meaning of life is \num{42}.
+\end{solution}
 
 \section{Math Notation}
 
-\section{Custom Commands}
+\textit{Algorithms for Optimization} uses lowercase characters with bold face for vectors, such as $\vect x$, and uppercase characters with bold face for matrices, such as $\mat \Sigma$.
+Scalars are lowercase with normal face, such as $\lambda$.
 
-\todo{This is something that I still need to do.}
+The contents of vectors and matrices can be typeset using \texttt{bmatrix}:
+\begin{equation}
+	\begin{bmatrix}x_1 \\ x_2\end{bmatrix} = \\
+	\begin{bmatrix}
+		\Sigma_{11} & \Sigma_{12} \\
+		\Sigma_{21} & \Sigma_{22}
+	\end{bmatrix}^{-1}
+	\begin{bmatrix}y_1 \\ y_2\end{bmatrix}
+\end{equation}
+
+We often write out vectors horizontally in order to save space.
+In these cases, we use comma-separate entries:
+\begin{equation}
+	\vect x = [x_1, x_2]
+\end{equation}
+
+We construct an optimization problem as follows:
+\begin{equation}
+	\begin{aligned}
+        \minimize_{\vect x} & & f(\vect x)\\
+        \subjectto & & g(\vect x) \leq \vect 0 \\
+        		   & & h(\vect x) = \vect 0
+    \end{aligned}
+\end{equation}
+
+See \texttt{tufte\_algorithm\_book.cls} for some additional math utilities, such as $\gaussian{\mu}{\nu}$ and $\card{\mathcal{A}}$.
+
+\section{Conclusion}
+
+That is more or less everything you need in order to get started writing your own textbook with the \texttt{tufte\_algorithm\_book} style.
+We hope you find it useful.
+
+If you have any questions or find improvements, please create issues on our GitHub repo: \url{https://github.com/sisl/textbook_template}.
