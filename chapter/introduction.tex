@@ -2,12 +2,6 @@
 \label{ch:introduction}
 
 Welcome to the book template!
-
-\todo{This is something that I still need to do.}
-
-\tim{This is a comment that Tim inserted.}
-\mykel{And this is Mykel. Go ahead and add new commands associated with your own names by editing \texttt{book.cls}.}
-
 This template is based on our previous book.\cite{Kochenderfer2019}
 
 \section{Using Julia}
@@ -74,7 +68,7 @@ This file is then compiled into the PDF.
 	}
 \end{figure}
 
-Of course, there is nothing stopping you from inserting tikzpictures directly.
+Of course, there is nothing stopping you from inserting tikzpictures directly, as shown in \cref{fig:sample_tikzpicture}.
 \begin{figure}
 	\centering
 	\begin{tikzpicture}[x=1cm, y=1cm]
@@ -88,3 +82,41 @@ Of course, there is nothing stopping you from inserting tikzpictures directly.
 		A figure made using the \texttt{tikzpicture} environment.
 	}
 \end{figure}
+
+Figures can also be placed in the margins, as with
+\begin{marginfigure}
+	\begin{jlcode}
+	p = let
+		Axis(Plots.Linear(x->sin(x) + x, 0:10, style="solid, pastelBlue, mark=none"),
+			 width="5cm", height="5cm", xlabel=L"x", ylabel=L"f(x)")
+	end
+	plot(p)
+	\end{jlcode}
+	\begin{center}
+		\plot{fig/sample_marginfigure}
+	\end{center}
+	\caption{
+		\label{fig:sample_marginfigure}
+		A \texttt{marginfigure} in the margin.
+	}
+\end{marginfigure}
+
+
+The \texttt{pythontex} package also supports
+\begin{juliaconsole}
+x = true
+y = false
+typeof(x)
+\end{juliaconsole}
+
+\section{Custom Environments}
+
+example
+
+problem / solution
+
+\section{Math Notation}
+
+\section{Custom Commands}
+
+\todo{This is something that I still need to do.}

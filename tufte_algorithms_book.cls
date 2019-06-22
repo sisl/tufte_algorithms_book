@@ -1,4 +1,4 @@
-\ProvidesClass{book_template}
+\ProvidesClass{tufte_algorithms_book}
 \RequirePackage{luatex85}
 
 \LoadClass[justified,nobib,titlepage]{tufte-book}
@@ -13,10 +13,6 @@
 	\@solutionappendixtrue
 }
 \ProcessOptions\relax
-
-\title{Textbook Template}
-\author[Kochenderfer and Wheeler]{Mykel J. Kochenderfer \& Tim A. Wheeler}
-\date{2019}
 
 \expandafter\def\csname PY@tok@err\endcsname{}
 
@@ -106,11 +102,6 @@
 
 \newcommand{\todo}[1]{\textbf{\textcolor{magenta}{#1}}}
 \newcommand{\needcite}{\todo{cite}}
-\newcommand{\tim}[1]{\textbf{\textcolor{teal}{#1}}}
-\newcommand{\mykel}[1]{\textbf{\textcolor{orange}{#1}}}
-\newcommand{\todof}[1]{\sidenote{\todo{#1}}}
-\newcommand{\timf}[1]{\sidenote{\tim{#1}}}
-\newcommand{\mykelf}[1]{\sidenote{\mykel{#1}}}
 
 \newcommand{\siyear}[1]{\num[group-minimum-digits=999]{#1}}
 \newcommand{\siyearrange}[2]{\siyear{#1}--\siyear{#2}}
