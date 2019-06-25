@@ -1319,8 +1319,8 @@
 \renewcommand{\do}[1]{%
     \ifstrequal{#1}{ruby}{\makepythontexfamily[pyglexer=ruby]{ruby}}{}%
     \ifstrequal{#1}{rb}{\makepythontexfamily[pyglexer=ruby]{rb}}{}%
-    \ifstrequal{#1}{julia}{\makepythontexfamily[pyglexer=julia6]{julia}}{}%
-    \ifstrequal{#1}{juliacon}{\pgfkeys{/PYTX/family, name=juliacon, default, pyglexer=jlcon6}%
+    \ifstrequal{#1}{julia}{\makepythontexfamily[pyglexer=julia1]{julia}}{}%
+    \ifstrequal{#1}{juliacon}{\pgfkeys{/PYTX/family, name=juliacon, default, pyglexer=jlcon1}%
                               \expandafter\xdef\csname pytx@macroformatter@juliacon\endcsname{\pytx@tmp@pprinter}%
                               \expandafter\gdef\csname pytx@fvsettings@juliacon\endcsname{}%
                               \expandafter\xdef\csname pytx@pyglexer@juliacon\endcsname{\pytx@tmp@pyglexer}%
@@ -1338,7 +1338,7 @@
                                 \begin{juliaconcode}}%
                                {\end{juliaconcode}%
                                 \ifbool{pytx@opt@autoprint}{}{\printpythontex{}}}}{}%
-    \ifstrequal{#1}{jl}{\makepythontexfamily[pyglexer=julia6]{jl}}{}%
+    \ifstrequal{#1}{jl}{\makepythontexfamily[pyglexer=julia1]{jl}}{}%
     \ifstrequal{#1}{matlab}{\makepythontexfamily[pyglexer=matlab]{matlab}}{}%
     \ifstrequal{#1}{octave}{\makepythontexfamily[pyglexer=octave]{octave}}{}%
     \ifstrequal{#1}{bash}{\makepythontexfamily[pyglexer=bash]{bash}}{}%
