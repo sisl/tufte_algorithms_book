@@ -26,11 +26,11 @@ git submodule update
 Compile the style:
 ```
 cd style
-python setup.py install
+sudo python setup.py install
 cd ..
 ```
 
-Install `pdf2svg`, which is used by PGFPlots:
+Install `pdf2svg`, which is used by PGFPlots (we assume Ubuntu - other operating systems may install pdf2svg differently):
 ```
 sudo apt-get install pdf2svg
 ```
@@ -40,15 +40,21 @@ Install [pgfplots](https://ctan.org/pkg/pgfplots).
 Install the Weave.jl package:
 ```julia
 using Pkg
-Pkg.add("Wave.jl")
+Pkg.add("Weave.jl")
 ```
 
-Update the texlive manager and install pythontex 0.17:
+Update the texlive manager and install pythontex:
 ```
 sudo /opt/texbin/tlmgr update --self
 sudo /opt/texbin/tlmgr update --all
 tlmgr update pythontex
 ```
+
+We require pythontex 0.17, which is not yet available from tlmgr.
+Download the latest version of pythontex available from master at https://github.com/gpoore/pythontex.
+Install it over the version of pythontex that was just installed.
+
+(Note that on arch-based systems, one should use tllocalmgr instead.)
 
 ## Compilation
 
