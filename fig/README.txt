@@ -1,0 +1,1 @@
+This directory is where PGFPlots.jl will generate figures.
