@@ -30,6 +30,19 @@ sudo python setup.py install
 cd ..
 ```
 
+Compile the lexer:
+```
+cd lexer
+sudo python setup.py install
+cd ..
+```
+
+Install the PGFPlots.jl package:
+```julia
+using Pkg
+Pkg.add("PGFPlots")
+```
+
 Install `pdf2svg`, which is used by PGFPlots (we assume Ubuntu - other operating systems may install pdf2svg differently):
 ```
 sudo apt-get install pdf2svg
@@ -40,7 +53,7 @@ Install [pgfplots](https://ctan.org/pkg/pgfplots).
 Install the Weave.jl package:
 ```julia
 using Pkg
-Pkg.add("Weave.jl")
+Pkg.add("Weave")
 ```
 
 Update the texlive manager and install pythontex:
