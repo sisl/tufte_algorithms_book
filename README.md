@@ -56,14 +56,7 @@ using Pkg
 Pkg.add("Weave")
 ```
 
-Update the texlive manager and install pythontex:
-```
-sudo /opt/texbin/tlmgr update --self
-sudo /opt/texbin/tlmgr update --all
-tlmgr update pythontex
-```
-
-We require pythontex 0.17, which is not yet available from tlmgr.
+We require pythontex 0.17, which has not been officially tagged at the time of this writing.
 Download the latest version of pythontex available from master at https://github.com/gpoore/pythontex.
 Install it over the version of pythontex that was just installed.
 
