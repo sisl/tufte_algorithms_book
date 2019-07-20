@@ -14,7 +14,7 @@ Install LaTeX via texlive. We recommend [this repo](https://github.com/scottkost
 
 Clone the repository to a location of your choosing:
 ```
-git clone https://github.com/sisl/textbook_template.git
+git clone https://github.com/sisl/tufte_algorithms_book.git
 ```
 
 Initialize and update the submodules:
