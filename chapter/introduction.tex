@@ -35,7 +35,7 @@ You can run all tests by executing \texttt{jl runtests.jl}.
 let
 	@test isapprox(sample_function(1.0, 2), -0.30685, atol=1e-5)
 	@test isapprox(sample_function(1.0, 3), -0.90139, atol=1e-5)
-	@test isapprox(sample_function(1.5, 2), -0.19315, atol=1e-5)
+	@test isapprox(sample_function(1.5, 2), 0.19315, atol=1e-5)
 end
 \end{juliatest}
 
