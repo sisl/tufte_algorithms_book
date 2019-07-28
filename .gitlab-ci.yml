@@ -2,6 +2,9 @@ stages:
   - test
   - deploy
 
+# To initialize submodules you need to set variables
+# GIT_SUBMODULE_STRATEGY=recursive
+# in gitlab CI/CD page
 before_script:
   - cd style &&
     python3 setup.py install &&
@@ -37,6 +40,7 @@ Julia 1.2:
   stage: test
   <<: *test_definition
 
+# compile the book only when all tests pass
 Deploy:
   image: johnnychen94/juliabook:stable
   stage: deploy
@@ -49,4 +53,4 @@ Deploy:
     - lualatex book
   artifacts:
     paths:
-      - "*.pdf"
+      - "book.pdf"
