@@ -1,0 +1,52 @@
+stages:
+  - test
+  - deploy
+
+before_script:
+  - cd style &&
+    python3 setup.py install &&
+    cd ..
+  - cd lexer &&
+    python3 setup.py install &&
+    cd ..
+  # update pythontex to 0.17-dev
+  - git clone https://github.com/gpoore/pythontex.git &&
+    cd pythontex/pythontex &&
+    echo 1 | python3 pythontex_install.py &&
+    cd ../..
+  # install julia dependency
+  - julia install_pkg.jl REQUIRE
+
+.test_template: &test_definition
+  script:
+    - julia pull_julia_code.jl
+    - julia runtests.jl
+
+Julia 1.0:
+  image: johnnychen94/juliabook:1.0
+  stage: test
+  <<: *test_definition
+
+Julia 1.1:
+  image: johnnychen94/juliabook:1.1
+  stage: test
+  <<: *test_definition
+
+Julia 1.2:
+  image: johnnychen94/juliabook:1.2
+  stage: test
+  <<: *test_definition
+
+Deploy:
+  image: johnnychen94/juliabook:stable
+  stage: deploy
+  script:
+    # compile the book
+    - julia pull_julia_code.jl
+    - lualatex book
+    - pythontex3 book
+    - biber book
+    - lualatex book
+  artifacts:
+    paths:
+      - "*.pdf"
