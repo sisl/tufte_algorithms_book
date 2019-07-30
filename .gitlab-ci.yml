@@ -18,7 +18,7 @@ before_script:
     echo 1 | python3 pythontex_install.py &&
     cd ../..
   # install julia dependency
-  - julia install_pkg.jl REQUIRE
+  - julia install_pkgs.jl REQUIRE
 
 .test_template: &test_definition
   script:
