@@ -1,7 +1,7 @@
-# add and build julia packages
+# Add and build Julia packages.
 # 
 # Usage:
-#   julia install_pkg.jl filename1 [filenames...]
+#   julia install_pkgs.jl filename1 [filenames...]
 #
 # example of requirement
 #
