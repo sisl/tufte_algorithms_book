@@ -37,10 +37,9 @@ sudo python setup.py install
 cd ..
 ```
 
-Install the PGFPlots.jl package:
+Install the required Julia packages:
 ```julia
-using Pkg
-Pkg.add("PGFPlots")
+julia install_pkg.jl REQUIRE
 ```
 
 Install `pdf2svg`, which is used by PGFPlots (we assume Ubuntu - other operating systems may install pdf2svg differently):
@@ -49,12 +48,6 @@ sudo apt-get install pdf2svg
 ```
 
 Install [pgfplots](https://ctan.org/pkg/pgfplots).
-
-Install the Weave.jl package:
-```julia
-using Pkg
-Pkg.add("Weave")
-```
 
 We require pythontex 0.17, which has not been officially tagged at the time of this writing.
 Download the latest version of pythontex available from master at https://github.com/gpoore/pythontex.
