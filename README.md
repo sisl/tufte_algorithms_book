@@ -39,7 +39,7 @@ cd ..
 
 Install the required Julia packages:
 ```julia
-julia install_pkg.jl REQUIRE
+julia install_pkgs.jl REQUIRE
 ```
 
 Install `pdf2svg`, which is used by PGFPlots (we assume Ubuntu - other operating systems may install pdf2svg differently):
