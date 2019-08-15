@@ -168,6 +168,49 @@ We construct an optimization problem as follows:
 
 See \texttt{tufte\_algorithm\_book.cls} for some additional math utilities, such as $\gaussian{\mu}{\nu}$ and $\card{\mathcal{A}}$.
 
+\section{Code Replacement}
+
+Sometimes the function you want typeset is almost, but not quite, the function that you want to also execute or test.
+For example, you may want to inject an extra line to store data into a global variable, or you may wish to replace a particular function with a specialized version.
+
+For such cases we have a simple replacement feature built into the \texttt{pull\_julia\_code} script.
+The script searches for \jlv{"REPLACE \(.*\) \(.*\)"} in the lines between the beginning of the \texttt{algorithm} environment and the beginning of the \texttt{juliaverbatim} environment.
+It will then match the string between the first parentheses and replace it with the string between the second parentheses when exporting the code.
+The code block will still be typeset with exactly what is inside the environment --- it is only the exported code that is changed.
+
+This feature was intended to be used sparingly.
+
+\begin{algorithm}
+% REPLACE (return x^2) (return sin(x))
+\begin{juliaverbatim}
+function replacement_example(x)
+	return x^2
+end
+\end{juliaverbatim}
+\caption{
+	\label{alg:replacement_example}
+	A sample typeset algorithm whose exported code differs from what is typeset.
+	Here the \jlv{x^2} will be replaced with \jlv{sin(x)}.
+}
+\end{algorithm}
+
+\begin{marginfigure}[6cm]
+	\begin{jlcode}
+	p = let
+		Axis(Plots.Linear(replacement_example, (0,10), style="solid, pastelBlue, mark=none"),
+			 width="5cm", height="5cm", xlabel=L"x", ylabel=L"f(x)")
+	end
+	plot(p)
+	\end{jlcode}
+	\begin{center}
+		\plot{fig/replacement_example}
+	\end{center}
+	\caption{
+		\label{fig:sample_marginfigure}
+		We find that when using \cref{alg:replacement_example}, we actually get $f(x) = \sin(x)$ due to the replacement going on under the hood.
+	}
+\end{marginfigure}
+
 \section{Conclusion}
 
 That is more or less everything you need in order to get started writing your own textbook with the \texttt{tufte\_algorithm\_book} style.
