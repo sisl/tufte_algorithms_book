@@ -6,7 +6,6 @@ The template allows for the direct compilation of a print-ready PDF, including s
 
 We do all of our development in Ubuntu.
 
-## Installation
 
 Install [Julia](https://julialang.org/downloads/platform.html).
 
@@ -55,13 +54,14 @@ Install it over the version of pythontex that was just installed.
 
 (Note that on arch-based systems, one should use tllocalmgr instead.)
 
+## Test
+
+Running `make test` pulls all the code and then runs all tests in `juliatest` blocks. See `runtests.jl` for details.
+
 ## Compilation
 
-The textbook can be compiled as follows:
-```
-julia pull_julia_code.jl
-lualatex book
-pythontex book
-biber book
-lualatex book
-```
+* `make compile` compiles the whole book
+* `make clean` removes all generated files except `book.pdf`
+
+If you host your project under Gitlab, `.gitlab-ci.yml` is a CI/CD template to start with.
+

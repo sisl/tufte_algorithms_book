@@ -22,8 +22,7 @@ before_script:
 
 .test_template: &test_definition
   script:
-    - julia pull_julia_code.jl
-    - julia runtests.jl
+    - make test
 
 Julia 1.0:
   image: johnnychen94/juliabook:1.0
@@ -40,17 +39,11 @@ Julia 1.2:
   stage: test
   <<: *test_definition
 
-# compile the book only when all tests pass
 Deploy:
   image: johnnychen94/juliabook:stable
   stage: deploy
   script:
-    # compile the book
-    - julia pull_julia_code.jl
-    - lualatex book
-    - pythontex3 book
-    - biber book
-    - lualatex book
+    - make compile
   artifacts:
     paths:
       - "book.pdf"
