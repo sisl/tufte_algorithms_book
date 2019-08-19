@@ -2,6 +2,14 @@ stages:
   - test
   - deploy
 
+variables:
+  # override DEPOT_PATH to install packages in the project
+  # folder, because gitlab can only cache files whthin it
+  JULIA_DEPOT_PATH: "$CI_PROJECT_DIR/.julia"
+cache:
+  paths:
+    - $JULIA_DEPOT_PATH
+
 # To initialize submodules you need to set variables
 # GIT_SUBMODULE_STRATEGY=recursive
 # in gitlab CI/CD page
