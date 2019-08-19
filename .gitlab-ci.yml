@@ -12,11 +12,6 @@ before_script:
   - cd lexer &&
     python3 setup.py install &&
     cd ..
-  # update pythontex to 0.17-dev
-  - git clone https://github.com/gpoore/pythontex.git &&
-    cd pythontex/pythontex &&
-    echo 1 | python3 pythontex_install.py &&
-    cd ../..
   # install julia dependency
   - julia install_pkgs.jl REQUIRE
 
