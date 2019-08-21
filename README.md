@@ -1,5 +1,7 @@
 # Tufte Algorithms Book Template
 
+[![pipeline status](https://gitlab.com/johnnychen94/tufte_algorithms_book/badges/master/pipeline.svg)](https://gitlab.com/johnnychen94/tufte_algorithms_book/commits/master)
+
 This book template provides a starting point upon which authors may freely build to generate their own textbook entirely in LaTeX.
 We used this setup for Algorithms for Optimization, and have continued to refine it for a new textbook on decision making under uncertainty.
 The template allows for the direct compilation of a print-ready PDF, including support for figures, examples, and exercises.
