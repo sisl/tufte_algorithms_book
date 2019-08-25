@@ -38,15 +38,16 @@ for filename in ARGS[1:end]
         @info "add and build $require"
 
         # parse name and version
-    	version_pos = findfirst(" ", require)
-        name = version_pos isa Nothing ? require : require[1:version_pos[1]-1]
+    	version_pos = findfirst(" ", require) |> first
+        version_pos2 = findlast(" ", require) |> first
+        name = version_pos isa Nothing ? require : require[1:version_pos-1]
         name = strip(name) |> String
         lowercase(name) == "julia" && continue # compat to REQUIRE
         
         if version_pos isa Nothing
             version = nothing
         else
-            version = strip(require[version_pos[2]+1:end])
+            version = strip(require[version_pos2+1:end])
             try
                 version = VersionNumber(version)
             catch ArgumentError
