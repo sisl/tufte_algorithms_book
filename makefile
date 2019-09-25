@@ -6,7 +6,7 @@ compile:
 ifdef CHAPTER
 	cp book.tex book.tex.bak
 	vim \
-	 -c ':/\\mainmatter/,/\\backmatter/s/\(^.*\\\(input\|include\).*$$\)/%\1/' \
+	 -c ':/\\begin{document}/,/\\end{document}/s/\(^.*\\\(input\|include\).*$$\)/%\1/' \
 	 $(foreach var,$(CHAPTER),-c ':g/\(chapter\|appendix\)\/$(var)/s/^.//' ) \
 	 -c :wq \
 	 book.tex
