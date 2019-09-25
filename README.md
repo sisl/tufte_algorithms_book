@@ -38,9 +38,9 @@ sudo python setup.py install
 cd ..
 ```
 
-Install the required Julia packages:
+Install the required Julia packages. You can install it mannually, or you can use [`jlpkg`](https://github.com/fredrikekre/jlpkg) for a pip-like experience:
 ```julia
-julia install_pkgs.jl REQUIRE
+jlpkg --project=@. add $(cat REQUIRE | grep -v julia)
 ```
 
 Install `pdf2svg`, which is used by PGFPlots (we assume Ubuntu - other operating systems may install pdf2svg differently):
