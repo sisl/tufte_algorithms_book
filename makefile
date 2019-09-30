@@ -11,10 +11,10 @@ ifdef CHAPTER
 	 -c :wq \
 	 book.tex
 endif
-	julia --color=yes pull_julia_code.jl
-	lualatex book
-	pythontex book
-	biber book
+	-julia --color=yes pull_julia_code.jl && \
+	lualatex book && \
+	pythontex book && \
+	biber book && \
 	lualatex book
 ifdef CHAPTER
 	mv book.tex.bak book.tex
