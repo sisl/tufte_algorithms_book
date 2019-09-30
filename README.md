@@ -38,9 +38,9 @@ sudo python setup.py install
 cd ..
 ```
 
-Install the required Julia packages:
+Install the required Julia packages. You can install it mannually, or you can use [`jlpkg`](https://github.com/fredrikekre/jlpkg) for a pip-like experience:
 ```julia
-julia install_pkgs.jl REQUIRE
+jlpkg --project=@. add $(cat REQUIRE | grep -v julia)
 ```
 
 Install `pdf2svg`, which is used by PGFPlots (we assume Ubuntu - other operating systems may install pdf2svg differently):
@@ -50,9 +50,7 @@ sudo apt-get install pdf2svg
 
 Install [pgfplots](https://ctan.org/pkg/pgfplots).
 
-We require pythontex 0.17, which has not been officially tagged at the time of this writing.
-Download the latest version of pythontex available from master at https://github.com/gpoore/pythontex.
-Install it over the version of pythontex that was just installed.
+We require pythontex 0.17, which was just recently tagged. You will probably have to update your version on texlive on miktex. Alternatively, you can download the latest version of pythontex from https://github.com/gpoore/pythontex.
 
 (Note that on arch-based systems, one should use tllocalmgr instead.)
 
@@ -63,6 +61,7 @@ Running `make test` pulls all the code and then runs all tests in `juliatest` bl
 ## Compilation
 
 * `make compile` compiles the whole book
+* `make compile CHAPTER = 'introduction chapter2\/introduction'` will comment out every `include` or `input` statement, except for `chapter/introduction` and `chapter/chapter2/introduction` where `chapter` can also be `appendix`. Requires `vim` to be installed.
 * `make clean` removes all generated files except `book.pdf`
 
 If you host your project under Gitlab, `.gitlab-ci.yml` is a CI/CD template to start with.
