@@ -1,7 +1,6 @@
 (sort-rule " " "")
 (sort-rule "-" "")
 
-(define-crossref-class "see")
 (markup-crossref-list :class "see" :open "\see{" :sep "; " :close "}{}")
 
 (markup-crossref-layer-list :sep ", ")
