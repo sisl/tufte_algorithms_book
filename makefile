@@ -1,7 +1,7 @@
 CHAPTER :=
 test:
-	julia --color=yes pull_julia_code.jl
-	julia --color=yes runtests.jl
+	julia --project --color=yes pull_julia_code.jl
+	julia --project --color=yes runtests.jl
 compile:
 ifdef CHAPTER
 	cp book.tex book.tex.bak
@@ -11,7 +11,7 @@ ifdef CHAPTER
 	 -c :wq \
 	 book.tex
 endif
-	-julia --color=yes pull_julia_code.jl && \
+	-julia --project --color=yes pull_julia_code.jl && \
 	lualatex book && \
 	pythontex book && \
 	biber book && \
