@@ -38,7 +38,7 @@ sudo python setup.py install
 cd ..
 ```
 
-Install the required Julia packages. You can simply `instantiate` the project using:
+Install the required Julia packages (listed in the [Project.toml](https://github.com/sisl/tufte_algorithms_book/blob/master/Project.toml)). You can install them manually, or simply `instantiate` the project:
 ```julia
 julia --project -e 'using Pkg; Pkg.instantiate()'
 ```
