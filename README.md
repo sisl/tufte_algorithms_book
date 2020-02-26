@@ -38,9 +38,9 @@ sudo python setup.py install
 cd ..
 ```
 
-Install the required Julia packages. You can install it mannually, or you can use [`jlpkg`](https://github.com/fredrikekre/jlpkg) for a pip-like experience:
+Install the required Julia packages. You can simply `instantiate` the project using:
 ```julia
-jlpkg --project=@. add $(cat REQUIRE | grep -v julia)
+julia --project -e 'using Pkg; Pkg.instantiate()'
 ```
 
 Install `pdf2svg`, which is used by PGFPlots (we assume Ubuntu - other operating systems may install pdf2svg differently):
@@ -65,4 +65,3 @@ Running `make test` pulls all the code and then runs all tests in `juliatest` bl
 * `make clean` removes all generated files except `book.pdf`
 
 If you host your project under Gitlab, `.gitlab-ci.yml` is a CI/CD template to start with.
-
