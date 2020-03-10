@@ -9,7 +9,7 @@ The template allows for the direct compilation of a print-ready PDF, including s
 We do all of our development in Ubuntu.
 
 
-Install [Julia](https://julialang.org/downloads/platform.html).
+Install [Julia](https://julialang.org/downloads/).
 
 Install LaTeX via texlive. We recommend [this repo](https://github.com/scottkosty/install-tl-ubuntu).
 
