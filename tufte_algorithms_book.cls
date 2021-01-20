@@ -14,6 +14,8 @@
 }
 \ProcessOptions\relax
 
+\usepackage[toc,page,title,titletoc]{appendix}
+
 \expandafter\def\csname PY@tok@err\endcsname{}
 
 \geometry{
@@ -384,7 +386,24 @@
 		{\end{mdframed}\end{@tufte@float}}
 \makeatother
 
+% The following code block controls how parts, chapters, and sections are displayed.
+% The titleformat blocks control how they look when typeset in the main book,
+% whereas the titlecontents blocks control how they look in the table of contents.
+% For a decent reference, see https://github.com/Tufte-LaTeX/tufte-latex/blob/efb8c8e836890bad71fb5834acdd316ebde6db12/tufte-common.def
+% NOTE(Tim, 20210116): I am fudging the vertical space by adding \vspace commands to get the effect I want.
+%                      Ideally we would not do this.
+% NOTE(Tim, 20210119): The appendixpart is included as an alternative for part that just rendered "APPENDIX".
+%                      Without this, we would get "PART APPENDIX".
 \makeatletter
+
+\titleclass{\part}{top}
+\titleformat{\part}%
+[display]% shape
+{}% format applied to label+text
+{\huge\smallcaps{Part~\thepart:}}% label
+{1em}% horizontal separation between label and title body
+{\huge\rmfamily\smallcaps}% before the title body
+
 \titleformat{\chapter}%
 [hang]% shape
 {}% format applied to label+text
@@ -393,40 +412,35 @@
 	{\huge\rmfamily\itshape}% before the title body
 
 \ifthenelse{\boolean{@tufte@toc}}{%
-	\titlecontents{chapter}%
-	[0em] % distance from left margin
-	{\vspace{\baselineskip}\begin{fullwidth}\Large\rmfamily\itshape} % above (global formatting of entry)
-		{\hspace*{0em}\contentslabel{0em}\hspace*{0.5in}} % before w/label (label = ``2'')
-		{\hspace*{0em}} % before w/o label
-		{\rmfamily\upshape\qquad\thecontentspage} % filler + page (leaders and page num)
-		[\end{fullwidth}] % after
-	\titlecontents{section}% FIXME
-	[0em] % distance from left margin
-	{\vspace{0\baselineskip}\begin{fullwidth}\large\rmfamily\itshape} % above (global formatting of entry)
-		{\hspace*{0.5in}\contentslabel{0.5in}} % before w/label (label = ``2.6'')
-		{\hspace*{0.5in}} % before w/o label
-		{\rmfamily\upshape\qquad\thecontentspage} % filler + page (leaders and page num)
-		[\end{fullwidth}] % after
-}{}
-
-\titleclass{\part}{top}
-\titleformat{\part}%
-[display]% shape
-{}% format applied to label+text
-{\itshape\huge Part~\thepart:}% label
-{1em}% horizontal separation between label and title body
-{\huge\rmfamily\itshape}% before the title body
-
-\ifthenelse{\boolean{@tufte@toc}}{%
 	\titlecontents{part}%
 	[0em] % distance from left margin
-	{\vspace{\baselineskip}\begin{fullwidth}\LARGE\rmfamily\itshape} % above (global formatting of entry)
+	{\vspace{0.5em}\vspace{\baselineskip}\begin{fullwidth}\LARGE\rmfamily\scshape\addfontfeature{LetterSpace=10}} % above (global formatting of entry)
 		{\hspace*{0em}\contentslabel{0em}\hspace*{0.5in}} % before w/label (label = ``2'')
-		{\hspace*{0em}\contentslabel{0em}Part~} % before w/o label
+		{\hspace*{0em}part\hspace*{0.5em}\contentslabel{0em}\lowercase} % before w/o label
+		{} % filler + page (leaders and page num)
+		[\end{fullwidth}\vspace*{-1em}] % after
+	\titlecontents{appendixpart}%
+	[0em] % distance from left margin
+	{\vspace{0.5em}\vspace{\baselineskip}\begin{fullwidth}\LARGE\rmfamily\scshape\addfontfeature{LetterSpace=10}} % above (global formatting of entry)
+		{\hspace*{0em}\contentslabel{0em}\hspace*{0.5in}} % before w/label (label = ``2'')
+		{\hspace*{0em}\contentslabel{0em}\lowercase} % before w/o label
+		{} % filler + page (leaders and page num)
+		[\end{fullwidth}\vspace*{-1em}] % after
+	\titlecontents{chapter}%
+	[0em] % distance from left margin
+	{\vspace{\baselineskip}\begin{fullwidth}\normalsize\rmfamily\itshape} % above (global formatting of entry)
+		{\hspace*{0em}\contentslabel{0em}\hspace*{0.25in}} % before w/label (label = ``2'')
+		{\hspace*{0em}} % before w/o label
 		{\rmfamily\upshape\qquad\thecontentspage} % filler + page (leaders and page num)
-		[\end{fullwidth}] % after
+		[\end{fullwidth}\vspace*{-1.5em}] % after
+	\titlecontents{section}%
+	[0em] % distance from left margin
+	{\vspace{\baselineskip}\begin{fullwidth}\small\rmfamily} % above (global formatting of entry)
+		{\hspace*{0.3in}\contentslabel{0em}\hspace*{0.5in}} % before w/label (label = ``2'')
+		{\hspace*{0em}} % before w/o label
+		{\rmfamily\qquad\thecontentspage} % filler + page (leaders and page num)
+		[\end{fullwidth}\vspace*{-1.5em}] % after
 }{}
-
 \makeatother
 
 

@@ -25,10 +25,17 @@
 \begin{jlcode}
 	include("../support_code.jl")
 \end{jlcode}
+
+\part{Awesome Content} % Multiple chapters can be grouped together into parts. Parts are totally optional.
 \include{chapter/introduction}
 % Add additional include statements for your other chapters.
+
 \appendix
+\part*{Appendices}
+\phantomsection
+\addcontentsline{toc}{appendixpart}{\appendixtocname}%
 \include{chapter/appendix}
+
 \solutions
 \backmatter
 \chapter*{References}
