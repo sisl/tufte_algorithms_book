@@ -61,7 +61,7 @@ Running `make test` pulls all the code and then runs all tests in `juliatest` bl
 ## Compilation
 
 * `make compile` compiles the whole book
-* `make compile CHAPTER = 'introduction chapter2\/introduction'` will comment out every `include` or `input` statement, except for `chapter/introduction` and `chapter/chapter2/introduction` where `chapter` can also be `appendix`. Requires `vim` to be installed.
+* `make compile CHAPTER='introduction chapter2\/introduction'` will comment out every `include` or `input` statement, except for `chapter/introduction` and `chapter/chapter2/introduction` where `chapter` can also be `appendix`. Requires `vim` to be installed.
 * `make clean` removes all generated files except `book.pdf`
 
 If you host your project under Gitlab, `.gitlab-ci.yml` is a CI/CD template to start with.
