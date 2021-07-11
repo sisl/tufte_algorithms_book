@@ -54,6 +54,8 @@ We require pythontex 0.18. You will probably have to update your version on texl
 
 (Note that on arch-based systems, one should use tllocalmgr instead.)
 
+(If you see a pygments-related import error you might want to check out https://github.com/sisl/tufte_algorithms_book/issues/30 and try downgrading to Pygments 2.6.1)
+
 ## Test
 
 Running `make test` pulls all the code and then runs all tests in `juliatest` blocks. See `runtests.jl` for details.
