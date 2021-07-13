@@ -21,9 +21,7 @@ before_script:
     python3 setup.py install &&
     cd ..
   # install julia dependency
-  - julia -e 'using Pkg; Pkg.add("jlpkg")' &&
-    julia -e 'import jlpkg; jlpkg.install(destdir="/usr/local/bin")' &&
-    jlpkg --project=@. add $(cat REQUIRE | grep -v julia)
+  - julia --project=@. -e 'using Pkg; Pkg.instantiate();'
 
 .test_template: &test_definition
   script:
