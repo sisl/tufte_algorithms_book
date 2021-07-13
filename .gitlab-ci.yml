@@ -32,13 +32,8 @@ Julia 1.0:
   stage: test
   <<: *test_definition
 
-Julia 1.1:
-  image: johnnychen94/juliabook:1.1
-  stage: test
-  <<: *test_definition
-
-Julia 1.2:
-  image: johnnychen94/juliabook:1.2
+Julia 1:
+  image: johnnychen94/juliabook:1
   stage: test
   <<: *test_definition
 
