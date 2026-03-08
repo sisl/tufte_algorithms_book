@@ -41,6 +41,6 @@ _ensure-venv:
 # Remove generated files (keeps book.pdf)
 clean:
     rm -f book.aux book.bbl book.bcf book.blg book.idx book.ilg book.ind
-    rm -f book.log book.out book.run.xml book.toc book.xwm
+    rm -f book.log book.out book.pytxcode book.run.xml book.toc book.xwm
     rm -f all_juliaconsole_blocks.jl all_algorithm_blocks.jl all_test_blocks.jl
     rm -rf pythontex-files-book _minted-book
