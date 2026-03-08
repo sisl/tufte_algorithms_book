@@ -24,3 +24,4 @@ all_juliaconsole_blocks.jl
 all_test_blocks.jl
 pythontex-files*
 pythontex-files-book
+.venv/

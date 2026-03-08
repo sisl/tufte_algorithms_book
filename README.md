@@ -8,62 +8,74 @@ The template allows for the direct compilation of a print-ready PDF, including s
 
 We do all of our development in Ubuntu.
 
+## Prerequisites
 
-Install [Julia](https://julialang.org/downloads/).
+Install [juliaup](https://github.com/JuliaLang/juliaup#installation) and then install Julia 1.10 (required by Weave.jl):
+```sh
+curl -fsSL https://install.julialang.org | sh
+juliaup add 1.10
+```
 
 Install LaTeX via texlive. We recommend [this repo](https://github.com/scottkosty/install-tl-ubuntu).
 
-Clone the repository to a location of your choosing:
-```
-git clone https://github.com/sisl/tufte_algorithms_book.git
-```
-
-Initialize and update the submodules:
-```
-git submodule init
-git submodule update
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/) for Python package management:
+```sh
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-Compile the style:
+Install [just](https://just.systems/man/en/installation.html) as a command runner:
+```sh
+cargo install just
 ```
-cd style
-sudo python setup.py install
-cd ..
+Or via Homebrew: `brew install just`
+
+## Setup
+
+Clone the repository:
+```sh
+git clone --recurse-submodules https://github.com/sisl/tufte_algorithms_book.git
 ```
 
-Compile the lexer:
-```
-cd lexer
-sudo python setup.py install
-cd ..
-```
-
-Install the required Julia packages (listed in the [Project.toml](https://github.com/sisl/tufte_algorithms_book/blob/master/Project.toml)). You can install them manually, or simply `instantiate` the project:
-```julia
-julia --project -e 'using Pkg; Pkg.instantiate()'
+Run setup to initialize submodules, install Julia packages, create a Python venv, and install the lexer/style:
+```sh
+just setup
 ```
 
 Install `pdf2svg`, which is used by PGFPlots (we assume Ubuntu - other operating systems may install pdf2svg differently):
-```
+```sh
 sudo apt-get install pdf2svg
 ```
 
 Install [pgfplots](https://ctan.org/pkg/pgfplots).
 
-We require pythontex 0.18. You will probably have to update your version on texlive on miktex. Alternatively, you can download the latest version of pythontex from https://github.com/gpoore/pythontex.
-
 (Note that on arch-based systems, one should use tllocalmgr instead.)
 
-(If you see a pygments-related import error you might want to check out https://github.com/sisl/tufte_algorithms_book/issues/30 and try downgrading to Pygments 2.6.1)
+## Usage
 
-## Test
+Build the full book:
+```sh
+just compile
+```
 
-Running `make test` pulls all the code and then runs all tests in `juliatest` blocks. See `runtests.jl` for details.
+Build a single chapter (pass the name without `chapter/` prefix or `.tex` extension):
+```sh
+just chapter introduction
+```
 
-## Compilation
+Run tests on all `juliatest` blocks:
+```sh
+just test
+```
 
-* `make compile` compiles the whole book
-* `make compile CHAPTER='introduction chapter2\/introduction'` will comment out every `include` or `input` statement, except for `chapter/introduction` and `chapter/chapter2/introduction` where `chapter` can also be `appendix`. Requires `vim` to be installed.
-* `make clean` removes all generated files except `book.pdf`
+Clean generated files (keeps `book.pdf`):
+```sh
+just clean
+```
 
-If you host your project under Gitlab, `.gitlab-ci.yml` is a CI/CD template to start with.
+## Compilation Details
+
+* `just compile` runs the full pipeline: extract Julia code, lualatex, pythontex, biber, lualatex
+* `just chapter <name>` uses `\includeonly` to compile only the specified chapter
+* `just test` pulls all the code and then runs all tests in `juliatest` blocks. See `runtests.jl` for details.
+
+If you host your project under GitLab, `.gitlab-ci.yml` is a CI/CD template to start with.
